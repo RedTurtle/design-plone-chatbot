@@ -1,0 +1,33 @@
+[repository]
+name = "design-plone-chatbot"
+changelog = "CHANGELOG.md"
+version = "version.txt"
+version_format = "semver"
+container_images_prefix = "ghcr.io/RedTurtle/design-plone-chatbot"
+compose = ["docker-compose.yml"]
+
+[repository.towncrier]
+section = "Project"
+settings = "towncrier.toml"
+
+[backend.package]
+name = "design.plone.chatbot"
+path = "backend"
+changelog = "backend/CHANGELOG.md"
+towncrier_settings = "backend/pyproject.toml"
+base_package = "Products.CMFPlone"
+publish = true
+
+[frontend.package]
+name = "@redturtle/volto-design-plone-chatbot"
+path = "frontend/packages/volto-design-plone-chatbot"
+changelog = "frontend/packages/volto-design-plone-chatbot/CHANGELOG.md"
+towncrier_settings = "frontend/packages/volto-design-plone-chatbot/towncrier.toml"
+base_package = "@plone/volto"
+# lo pubblichiamo via github actions (npm.yml)
+publish = false
+
+[cookieplone]
+template = "monorepo_addon"
+template_version = "8e498811980e38b7db5d5cb0f5645256feaa8799"
+generated_date = "2026-08-13 20:31:28"

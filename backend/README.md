@@ -4,7 +4,8 @@ A chatbot addon for Agid Plone sites
 
 ## Features
 
-TODO: List our awesome features
+- Registers a "Impostazioni Chatbot" control panel where editors set the chatbot enabled flag and the two editorial messages (first message shown to visitors, footer disclaimer), stored in the site registry.
+- Exposes those settings anonymously through the public `@chatbot-settings` REST endpoint, so the frontend widget can read them without authentication and even on routes with no content object (search results, 404, ...).
 
 ## Installation
 

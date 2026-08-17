@@ -30,7 +30,7 @@ describe('Chatbot settings reducer', () => {
         type: `${GET_CHATBOT_SETTINGS}_SUCCESS`,
         result: {
           enabled: true,
-          welcome_message: 'Ciao!',
+          first_message: 'Ciao!',
           footer_message: 'Stai parlando con un bot.',
         },
       }),
@@ -38,7 +38,7 @@ describe('Chatbot settings reducer', () => {
       error: null,
       data: {
         enabled: true,
-        welcome_message: 'Ciao!',
+        first_message: 'Ciao!',
         footer_message: 'Stai parlando con un bot.',
       },
       loaded: true,

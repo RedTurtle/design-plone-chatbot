@@ -48,7 +48,7 @@ describe('ChatbotLoader', () => {
   it('mounts io-chatto with the editorial messages and injects the widget script when enabled', () => {
     const store = makeStore({
       enabled: true,
-      welcome_message: 'Ciao! Sono un assistente virtuale.',
+      first_message: 'Ciao! Sono un assistente virtuale.',
       footer_message: 'Stai parlando con un bot.',
     });
     render(

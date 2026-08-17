@@ -32,7 +32,7 @@ const ChatbotLoader = ({ pathname }: ChatbotLoaderProps) => {
   const dispatch = useDispatch();
   const {
     enabled,
-    welcome_message: welcomeMessage,
+    first_message: welcomeMessage,
     footer_message: footerMessage,
   } = useSelector(
     (state: any) => state.chatbot_settings?.data ?? {},

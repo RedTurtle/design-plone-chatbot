@@ -8,7 +8,7 @@ import { GET_CHATBOT_SETTINGS } from '../constants/ActionTypes';
  */
 export interface ChatbotSettingsData {
   enabled: boolean;
-  welcome_message: string;
+  first_message: string;
   footer_message: string;
 }
 

@@ -5,6 +5,13 @@
     i18n_domain="design.plone.chatbot"
     >
 
+  <browser:page
+      name="chatbot-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".settings.ChatbotControlPanelView"
+      permission="cmf.ManagePortal"
+      />
+
   <!-- -*- extra stuff goes here -*- -->
 
 </configure>

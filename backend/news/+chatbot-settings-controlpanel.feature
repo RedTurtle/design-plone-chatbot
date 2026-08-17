@@ -1,0 +1,1 @@
+Add a control panel to enable/disable the chatbot and configure its first message and footer disclaimer message, plus a public `@chatbot-settings` endpoint so the frontend can read these values anonymously.

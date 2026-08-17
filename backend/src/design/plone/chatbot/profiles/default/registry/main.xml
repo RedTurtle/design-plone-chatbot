@@ -3,6 +3,8 @@
           i18n:domain="design.plone.chatbot"
 >
 
+  <records interface="design.plone.chatbot.controlpanels.settings.IChatbotSettings" />
+
   <!-- -*- extra stuff goes here -*- -->
 
 </registry>

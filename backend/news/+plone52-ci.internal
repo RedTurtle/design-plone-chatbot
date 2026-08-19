@@ -1,0 +1,1 @@
+Lower `requires-python` to `>=3.8` and add a Plone 5.2 / Python 3.8 job to the backend CI matrix. @redturtle

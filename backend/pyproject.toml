@@ -4,7 +4,7 @@ dynamic = ["version"]
 description = "A chatbot addon for Agid Plone sites"
 readme = "README.md"
 license = { text = "GPL-2.0-only" }
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.8,<3.14"
 authors = [
     { name = "RedTurtle Technology", email = "sviluppo@redturtle.it" },
 ]
@@ -17,11 +17,13 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Framework :: Plone",
+    "Framework :: Plone :: 5.2",
     "Framework :: Plone :: 6.1",
     "Framework :: Plone :: 6.2",
     "Framework :: Plone :: Addon",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -40,7 +42,8 @@ test = [
     "plone.restapi[test]",
     "pytest",
     "pytest-cov",
-    "pytest-plone>=1.0.0a2",
+    "pytest-plone<0.3; python_version < '3.9'",  # Plone 5.2: no plone.base dependency
+    "pytest-plone>=1.0.0a2; python_version >= '3.9'",
 ]
 
 [project.urls]

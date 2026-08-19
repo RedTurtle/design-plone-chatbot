@@ -1,0 +1,1 @@
+Skip example content creation when `plone.exportimport` is not available, so the `initial` profile does not break installation on Plone 5.2 / 6.0. [mamico]

@@ -23,7 +23,7 @@ ifeq (, $(shell which $(UV) ))
   $(error "UV=$(UV) not found in $(PATH)")
 endif
 
-REPOSITORY_SETTINGS := $(shell uvx repoplone settings dump)
+REPOSITORY_SETTINGS := $(shell uvx --python 3.12 repoplone settings dump)
 IMAGE_NAME_PREFIX := $(shell echo '$(REPOSITORY_SETTINGS)' | jq -r '.container_images_prefix')
 IMAGE_TAG=latest
 IMAGE_NAME=$(IMAGE_NAME_PREFIX)-backend:$(IMAGE_TAG)
@@ -41,12 +41,27 @@ BIN_FOLDER=$(VENV_FOLDER)/bin
 export PYTHONWARNINGS := ignore
 export DOCKER_BUILDKIT := 1
 export PYTHON_VERSION := 3.11
-export PLONE_VERSION := $(shell echo '$(REPOSITORY_SETTINGS)' | jq -r '.backend.base_package_version')
+export PLONE_VERSION ?= $(shell echo '$(REPOSITORY_SETTINGS)' | jq -r '.backend.base_package_version')
 
 ifdef CI
 UV_VENV_ARGS :=
 else
 UV_VENV_ARGS := --python=$(PYTHON_VERSION)
+endif
+
+# Plone 5.2's release constraints pin an older plone.restapi than
+# plone.volto 4.x needs; see mx-plone52.ini.
+MXDEV_INI := mx.ini
+ifneq (,$(findstring 5.2,$(PLONE_VERSION)))
+MXDEV_INI := mx-plone52.ini
+# Plone 5.2 (Python 3.8) builds AccessControl's C extension from source;
+# newer GCC (>=14) turns its legacy tp_print initializer into a hard
+# error instead of a warning.
+export CFLAGS := -Wno-error=int-conversion -std=gnu17
+# Autoloading pytest_plone's own entry point (before conftest.py's
+# pkg_resources fix has run) hits a pkg_resources dot/underscore bug on
+# Plone 5.2; see tests/conftest.py.
+export PYTEST_DISABLE_PLUGIN_AUTOLOAD := 1
 endif
 
 
@@ -67,10 +82,10 @@ debug-settings:  ## Debug settings
 	@echo "IMAGE_NAME: $(IMAGE_NAME)"
 
 
-requirements-mxdev.txt: pyproject.toml mx.ini ## Generate constraints file
+requirements-mxdev.txt: pyproject.toml mx.ini mx-plone52.ini ## Generate constraints file
 	@echo "$(GREEN)==> Generate constraints file$(RESET)"
 	@echo '-c https://dist.plone.org/release/$(PLONE_VERSION)/constraints.txt' > requirements.txt
-	@uvx "mxdev[uv]" -c mx.ini
+	@uvx "mxdev[uv]" -c $(MXDEV_INI)
 
 $(VENV_FOLDER): requirements-mxdev.txt ## Install dependencies
 	@echo "$(GREEN)==> Install environment$(RESET)"

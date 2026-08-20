@@ -1,1 +1,1 @@
-Fall back to `Products.CMFPlone.interfaces.INonInstallable` when `plone.base` is not available, so the package can still register on Plone 5.2. @redturtle
+Fall back to `Products.CMFPlone.interfaces.INonInstallable` when `plone.base` is not available, so the package can still register on Plone 5.2. @mamico

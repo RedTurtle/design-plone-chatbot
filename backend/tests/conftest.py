@@ -64,6 +64,10 @@ if sys.version_info < (3, 9):
     # aborts loading the whole fixtures package, so none of its convenience
     # fixtures (portal, installer, browser_layers, profile_last_version, ...)
     # end up registered. Provide the ones our tests need ourselves.
+    from urllib.parse import urljoin
+    from urllib.parse import urlparse
+
+    import requests
 
     @pytest.fixture
     def portal(integration):
@@ -95,3 +99,51 @@ if sys.version_info < (3, 9):
             return version[0] if version else ""
 
         return _profile_last_version
+
+    @pytest.fixture
+    def functional_portal(functional):
+        return functional["portal"]
+
+    class _RelativeSession(requests.Session):
+        """Minimal standalone equivalent of plone.restapi.testing.RelativeSession."""
+
+        def __init__(self, base_url):
+            super().__init__()
+            if not base_url.endswith("/"):
+                base_url += "/"
+            self._base_url = base_url
+
+        def request(self, method, url, **kwargs):
+            if urlparse(url).scheme not in ("http", "https"):
+                url = urljoin(self._base_url, url.lstrip("/"))
+            return super().request(method, url, **kwargs)
+
+    @pytest.fixture
+    def request_factory(functional_portal, request):
+        def factory(*, role="Anonymous", basic_auth=None, api=True):
+            from plone.app.testing import SITE_OWNER_NAME
+            from plone.app.testing import SITE_OWNER_PASSWORD
+
+            base_url = functional_portal.absolute_url()
+            if api:
+                base_url = f"{base_url}/++api++"
+            session = _RelativeSession(base_url)
+            session.headers.update({"Accept": "application/json"})
+            if basic_auth is not None:
+                session.auth = basic_auth
+            elif role == "Manager":
+                session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+            elif role != "Anonymous":
+                raise ValueError(f"Unknown role {role!r}")
+            request.addfinalizer(session.close)
+            return session
+
+        return factory
+
+    @pytest.fixture
+    def manager_request(request_factory):
+        return request_factory(role="Manager")
+
+    @pytest.fixture
+    def anon_request(request_factory):
+        return request_factory(role="Anonymous")

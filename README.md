@@ -6,6 +6,11 @@
 
 A chatbot addon for Agid Plone sites
 
+## Features ✨
+
+- **Frontend** (`frontend/packages/volto-design-plone-chatbot`): mounts the [`io-chatto`](https://github.com/RedTurtle/poc-rag-website-kb) chat widget on every route of the site — including contentless ones like search results — and reads the enabled flag plus the two editorial disclaimer messages from the backend, so the widget disappears immediately when a site editor turns it off from the control panel.
+- **Backend** (`backend/src/design/plone/chatbot`): registers a control panel ("Impostazioni Chatbot") with the enabled flag and the two editorial messages (first message and footer disclaimer), stored in the site registry, and exposes them anonymously through the public `@chatbot-settings` REST service the frontend reads.
+
 ## Quick Start 🏁
 
 ### Prerequisites ✅

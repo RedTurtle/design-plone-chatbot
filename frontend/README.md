@@ -7,9 +7,12 @@ A chatbot addon for Agid Plone sites
 [![CI](https://github.com/RedTurtle/design-plone-chatbot/actions/workflows/main.yml/badge.svg)](https://github.com/RedTurtle/design-plone-chatbot/actions/workflows/main.yml)
 
 
-## Features
+## 🚀 Features
 
-<!-- List your awesome features here -->
+- Renders the [`io-chatto`](https://github.com/RedTurtle/poc-rag-website-kb) chat widget as a route-independent `appExtras` entry, so it is available on every page — including ones with no content object behind them, such as search results or the 404 page.
+- Reads the enabled flag and the two editorial messages (welcome message and footer disclaimer) from the backend's `@chatbot-settings` REST service, fetched both during server-side rendering and on every client-side route change.
+- Mounts nothing at all — no script injected, no request to the chatbot backend — when the site's control panel has the chatbot disabled, so editors can turn it off immediately without a new deploy.
+- Loads the widget script and its `welcome-message`/`ai-disclaimer` attributes only when enabled, keeping the widget's own runtime configuration (API URL, contact e-mail, widget title) as static per-deployment settings (`RAZZLE_CHATBOT_*` environment variables) rather than editorial content.
 
 ## Installation
 

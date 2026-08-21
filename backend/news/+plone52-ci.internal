@@ -1,0 +1,1 @@
+Lower `requires-python` to `>=3.8` and add a Plone 5.2 / Python 3.8 job to the backend CI matrix. Cap `plone.volto` to the 4.x line on Python 3.8 (the last one supporting Plone 5.2) and let `plone.restapi` resolve freely there instead of using Plone 5.2's stale `7.9.0` release pin. @mamico

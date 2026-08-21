@@ -4,7 +4,7 @@ dynamic = ["version"]
 description = "A chatbot addon for Agid Plone sites"
 readme = "README.md"
 license = { text = "GPL-2.0-only" }
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.8,<3.14"
 authors = [
     { name = "RedTurtle Technology", email = "sviluppo@redturtle.it" },
 ]
@@ -17,11 +17,15 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Framework :: Plone",
+    "Framework :: Plone :: 5.2",
     "Framework :: Plone :: 6.1",
     "Framework :: Plone :: 6.2",
     "Framework :: Plone :: Addon",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -30,7 +34,10 @@ dependencies = [
     "Products.CMFPlone",
     "plone.api",
     "plone.restapi",
-    "plone.volto",
+    # plone.volto 4.x is the last line supporting Plone 5.2 (needs
+    # plone.restapi>=8.13, see mx-plone52.ini); 5.0.0+ requires Python>=3.10.
+    "plone.volto>=4.0.0,<5.0.0b1; python_version < '3.9'",
+    "plone.volto; python_version >= '3.9'",
 ]
 
 [project.optional-dependencies]
@@ -40,7 +47,11 @@ test = [
     "plone.restapi[test]",
     "pytest",
     "pytest-cov",
-    "pytest-plone>=1.0.0a2",
+    "pytest-plone<0.3; python_version < '3.9'",  # Plone 5.2: no plone.base dependency
+    "pytest-plone>=1.0.0a2; python_version >= '3.9'",
+    # gocept.pytestlayer>=8.1 is a deprecation stub that raises on import;
+    # pytest-plone<0.3 (Plone 5.2) still needs the real thing.
+    "gocept.pytestlayer<8.1; python_version < '3.9'",
 ]
 
 [project.urls]
@@ -169,7 +180,7 @@ order-by-type = false
 preview = true
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E501", "RUF001", "S101"]
+"tests/*" = ["E501", "RUF001", "S101", "E402", "UP036"]
 
 [tool.check-manifest]
 ignore = [
@@ -177,6 +188,7 @@ ignore = [
     ".flake8",
     "dependabot.yml",
     "mx.ini",
+    "mx-plone52.ini",
 ]
 
 [tool.pytest.ini_options]
